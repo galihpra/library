@@ -6,7 +6,7 @@ export const borrowBookController = (req, res) => {
     if (!user_id || !book_id) {
         return res.status(400).json({ message: 'User ID and Book ID are required' });
     }
-    borrowBook(user_id, book_id, (err, result) => {
+    borrowBook(user_id, book_id, (err) => {
         if (err) {
             if (err.statusCode) {
                 return res.status(err.statusCode).json({ message: err.message });
@@ -14,7 +14,7 @@ export const borrowBookController = (req, res) => {
                 return res.status(500).json({ message: 'Error borrowing book', error: err.message });
             }
         }
-        res.status(200).json({ message: 'Book borrowed successfully', data: result });
+        res.status(200).json({ message: 'Book borrowed successfully' });
     });
 };
 
