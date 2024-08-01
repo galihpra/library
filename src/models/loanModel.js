@@ -62,7 +62,9 @@ export const returnBook = (userId, bookId, callback) => {
                     return global.db.rollback(() => callback(err));
                 }
                 if (results.length === 0) {
-                    return global.db.rollback(() => callback(new Error('No loan found for this user and book')));
+                    const error = new Error('No loan found for this user and book');
+                    error.statusCode = 404; 
+                    return global.db.rollback(() => callback(error));
                 }
 
                 const tanggalPinjam = new Date(results[0].tanggal_pinjam);
@@ -70,7 +72,7 @@ export const returnBook = (userId, bookId, callback) => {
 
                 if (tanggalPinjam < sevenDaysAgo) {
                     global.db.query(
-                        'INSERT INTO penalty (user_id, penalty_end) VALUES (?, DATE_ADD(CURDATE(), INTERVAL 3 DAY))',
+                        'INSERT INTO penalty (user_id, tanggal_penalty, penalty_end) VALUES (?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 3 DAY))',
                         [userId],
                         (err, result) => {
                             if (err) {
