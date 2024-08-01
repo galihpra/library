@@ -20,6 +20,7 @@ Follow these steps to install and set up the Library API:
 
     ```sql
     CREATE DATABASE db_library;
+    
     CREATE TABLE users (
     `code` VARCHAR(10) PRIMARY KEY NOT NULL,
     `name` VARCHAR(100) NOT NULL
