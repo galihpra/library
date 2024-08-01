@@ -27,7 +27,11 @@ export const returnBookController = (req, res) => {
 
     returnBook(user_id, book_id, (err, result) => {
         if (err) {
-            return res.status(500).json({ message: 'Error returning book', error: err.message });
+            if (err.statusCode) {
+                return res.status(err.statusCode).json({ message: err.message });
+            } else {
+                return res.status(500).json({ message: 'Error returning book', error: err.message });
+            }
         }
         res.status(200).json(result);
     });
